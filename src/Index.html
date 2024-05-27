@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="javascript/script.js" defer></script>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="#" data-section="home">Accueil</a></li>
+            <li><a href="#" data-section="signin">Inscription</a></li>
+            <li><a href="#" data-section="login">Connexion</a></li>
+            <li><a href="#" data-section="profile">Profile</a></li>
+            <li><a href="#" data-section="game">Jeu</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="home">
+    <h1>Accueil</h1>
+    <p>WIP</p>
+</section>
+
+<section id="signin" style="display: none;">
+    <h1>Inscription</h1>
+    <p>WIP</p>
+</section>
+
+<section id="login" style="display: none;">
+    <h1>Connexion</h1>
+    <p>WIP</p>
+</section>
+
+<section id="profile" style="display: none;">
+    <h1>Profile</h1>
+    <p>WIP</p>
+</section>
+
+<section id="game" style="display: none;">
+    <h1>Jeu de Memory</h1>
+    <div id="game-settings">
+        <label for="board-size">Choisissez une taille :</label>
+        <select id="board-size">
+            <option value="3x4">3x4</option>
+            <option value="4x4">4x4</option>
+            <option value="5x4">5x4</option>
+        </select>
+        <br>
+        <label for="card-type">Choisissez un jeu de cartes:</label>
+        <select id="card-type">
+            <option value="letters">Lettres</option>
+            <option value="animals">Animaux</option>
+        </select>
+        <br>
+        <button id="start-game">Jouer</button>
+    </div>
+    <div id="moves">Tours: 0</div>
+    <div id="game-board"></div>
+</section>
+</body>
+</html>
