@@ -8,6 +8,7 @@
     <script src="javascript/navigation.js" defer></script>
     <script src="javascript/game.js" defer></script>
     <script src="javascript/users.js" defer></script>
+    <script src="javascript/validation.js" defer></script>
 </head>
 <body>
 <header>
@@ -29,29 +30,40 @@
 
 <section id="signin" style="display: none;">
     <h1>Inscription</h1>
-    <form id="signInForm">
+    <form id="signInForm" class="box">
         <div>
             <label for="signInUsername">Nom d'utilisateur :</label>
             <input type="text" id="signInUsername" name="signInUsername" required>
+            <span id="usernameMessage"></span>
         </div>
         <div>
             <label for="signInEmail">Email :</label>
             <input type="email" id="signInEmail" name="signInEmail" required>
+            <span id="emailMessage"></span>
         </div>
-
         <div>
             <label for="signInPassword">Mot de passe :</label>
             <input type="password" id="signInPassword" name="signInPassword" required>
+            <span id="passwordStrengthText"></span>
+            <div id="progressBarContainer">
+                <div id="passwordStrengthBar"></div>
+            </div>
+            <span id="passwordMessage"></span>
         </div>
         <div>
-            <button type="submit">Sign In</button>
+            <label for="confirmPassword">Vérifiez votre de passe :</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <span id="confirmPasswordMessage"></span>
+        </div>
+        <div>
+            <button id="signInSubmit" type="submit" disabled>Sign In</button>
         </div>
     </form>
 </section>
 
 <section id="login" style="display: none;">
     <h1>Connexion</h1>
-    <form id="loginForm">
+    <form id="loginForm" class="box">
         <div>
             <label for="loginEmail">Email :</label>
             <input type="email" id="loginEmail" name="loginEmail" required>
@@ -70,11 +82,14 @@
 <section id="profile" style="display: none;">
     <h1>Profile</h1>
     <p>WIP</p>
+    <p id="bestScore">test</p>
+    <button id="bestScoreButton">test</button>
+    <button id="logoff">Déconnexion</button>
 </section>
 
 <section id="game" style="display: none;">
     <h1>Jeu de Memory</h1>
-    <div id="game-settings">
+    <div id="game-settings" class="box">
         <label for="board-size">Choisissez une taille :</label>
         <select id="board-size">
             <option value="3x4">3x4</option>
