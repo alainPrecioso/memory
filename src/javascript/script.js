@@ -22,6 +22,21 @@ navLinks.forEach(link => {
     });
 });
 
+//
+function handleSpaceKeyPress(event) {
+
+}
+
+// EventListener pour la barre espace
+document.addEventListener('keydown', function(event) {
+    if (!document.querySelector('input:focus')) { // vérifie qu'on ne se trouve pas dans un input field
+        if (event.code === 'Space' || event.key === ' ') {
+            resetGame();
+            showSection('game')
+        }
+    }
+});
+
 // Cache toutes les sections et affiche celle demandée
 function showSection(sectionId) {
     sections.forEach(section => {
