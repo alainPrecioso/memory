@@ -1,12 +1,12 @@
 // Signin
-document.getElementById('signInForm').addEventListener('submit', handleSignIn);
+document.getElementById('sign-in-form').addEventListener('submit', handleSignIn);
 
 function handleSignIn(event) {
     event.preventDefault();
 
-    const email = document.getElementById('signInEmail').value;
-    const username = document.getElementById('signInUsername').value;
-    const password = document.getElementById('signInPassword').value;
+    const email = document.getElementById('sign-in-email').value;
+    const username = document.getElementById('sign-in-username').value;
+    const password = document.getElementById('sign-in-password').value;
 
     let users = JSON.parse(localStorage.getItem('users')) || [];
 
@@ -33,10 +33,10 @@ function handleSignIn(event) {
 
 
 // Login
-document.getElementById('loginForm').addEventListener('submit', handleLogin);
+document.getElementById('login-form').addEventListener('submit', handleLogin);
 document.getElementById('logoff').addEventListener('click', handleLogoff);
 
-document.getElementById('bestScoreButton').addEventListener('click', setBestScore);
+document.getElementById('best-score-button').addEventListener('click', setBestScore);
 
 document.addEventListener('DOMContentLoaded', () => {
     if (isLoggedIn()) {
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleLogin(event) {
     event.preventDefault();
 
-    const email = document.getElementById('loginEmail').value;
+    const email = document.getElementById('login-email').value;
 
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const user = users.find(user => user.email === email);

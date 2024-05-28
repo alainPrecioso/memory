@@ -1,14 +1,14 @@
 // Get form elements
-const signInForm = document.getElementById('signInForm');
-const signInUsername = signInForm.querySelector('#signInUsername');
-const signInEmail = signInForm.querySelector('#signInEmail');
-const signInPassword = signInForm.querySelector('#signInPassword');
-const confirmPassword = signInForm.querySelector('#confirmPassword');
-const submitButton = signInForm.querySelector('#signInSubmit');
-const usernameMessage = signInForm.querySelector('#usernameMessage');
-const emailMessage = signInForm.querySelector('#emailMessage');
-const passwordMessage = signInForm.querySelector('#passwordMessage');
-const confirmPasswordMessage = signInForm.querySelector('#confirmPasswordMessage');
+const signInForm = document.getElementById('sign-in-form');
+const signInUsername = document.getElementById('sign-in-username');
+const signInEmail = document.getElementById('sign-in-email');
+const signInPassword = document.getElementById('sign-in-password');
+const confirmPassword = document.getElementById('confirm-password');
+const submitButton = document.getElementById('sign-in-submit');
+const usernameMessage = document.getElementById('username-message');
+const emailMessage = document.getElementById('email-message');
+const passwordMessage = document.getElementById('password-message');
+const confirmPasswordMessage = document.getElementById('confirm-password-message');
 
 const containsLowerCase = str => /[a-z]/.test(str);
 
@@ -30,8 +30,8 @@ const validateEmail = () => {
 
 const validatePassword = () => {
     const password = signInPassword.value;
-    const passwordStrengthBar = document.getElementById('passwordStrengthBar');
-    const passwordStrengthText = document.getElementById('passwordStrengthText');
+    const passwordStrengthBar = document.getElementById('password-strength-bar');
+    const passwordStrengthText = document.getElementById('password-strength-text');
 
     const hasMinLength = password.length >= 6;
     const hasLowerCase = containsLowerCase(password);

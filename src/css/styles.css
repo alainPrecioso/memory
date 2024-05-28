@@ -95,7 +95,7 @@ button:hover {
     background-color: pink;
 }
 
-#progressBarContainer {
+#progress-bar-container {
     background-color: lightgray;
     height: 10px;
     width: 100%;
@@ -103,11 +103,10 @@ button:hover {
     margin-bottom: 10px;
 }
 
-#passwordStrengthBar {
+#password-strength-bar {
     height: 100%;
     width: 0;
 }
-
 
 #home {
     display: block;
