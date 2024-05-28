@@ -143,6 +143,10 @@ function checkForWin() {
         setTimeout(() => {
             alert(`Bravo! Votre score est de ${moves} tours !`);
             resetGame();
+            // TODO finish if needed
+            saveBestScore(getLoggedInUserEmail(), moves)
+
+
         }, 500);
     }
 }
