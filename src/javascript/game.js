@@ -1,5 +1,4 @@
 const sections = document.querySelectorAll('section'); // Sélectionne toutes les sections de la page
-const navLinks = document.querySelectorAll('nav ul li a'); // Sélectionne tous les liens dans la barre de navigation
 const gameBoard = document.getElementById('game-board'); // Sélectionne le conteneur du plateau de jeu
 const movesDisplay = document.getElementById('moves'); // Sélectionne l'affichage du score
 const gameSettings = document.getElementById('game-settings'); // Sélectionne le conteneur des options de jeu
@@ -13,37 +12,14 @@ let lockBoard = false; // Empêche les cartes d'être retournées pendant la vé
 let moves = 0; // Nombre de mouvements effectués ou score
 let matchedPairs = 0; // Nombre de paires de cartes trouvées
 
-// Crée les écouteurs d'événements sur les éléments de la barre de navigation pour afficher les sections correspondantes
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        resetGame();
-        showSection(link.getAttribute('data-section'));
-    });
-});
-
-//
-function handleSpaceKeyPress(event) {
-
-}
-
 // EventListener pour la barre espace
 document.addEventListener('keydown', function(event) {
     if (!document.querySelector('input:focus')) { // vérifie qu'on ne se trouve pas dans un input field
         if (event.code === 'Space' || event.key === ' ') {
             resetGame();
-            showSection('game')
         }
     }
 });
-
-// Cache toutes les sections et affiche celle demandée
-function showSection(sectionId) {
-    sections.forEach(section => {
-        section.style.display = 'none';
-    });
-    document.getElementById(sectionId).style.display = 'block';
-}
 
 startButton.addEventListener('click', () => startGame());
 
@@ -167,7 +143,6 @@ function checkForWin() {
         setTimeout(() => {
             alert(`Bravo! Votre score est de ${moves} tours !`);
             resetGame();
-            showSection('game');
         }, 500);
     }
 }

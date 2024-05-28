@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="javascript/script.js" defer></script>
+    <script src="javascript/navigation.js" defer></script>
+    <script src="javascript/game.js" defer></script>
+    <script src="javascript/users.js" defer></script>
 </head>
 <body>
 <header>
@@ -27,12 +29,42 @@
 
 <section id="signin" style="display: none;">
     <h1>Inscription</h1>
-    <p>WIP</p>
+    <form id="signInForm">
+        <div>
+            <label for="signInUsername">Nom d'utilisateur :</label>
+            <input type="text" id="signInUsername" name="signInUsername" required>
+        </div>
+        <div>
+            <label for="signInEmail">Email :</label>
+            <input type="email" id="signInEmail" name="signInEmail" required>
+        </div>
+
+        <div>
+            <label for="signInPassword">Mot de passe :</label>
+            <input type="password" id="signInPassword" name="signInPassword" required>
+        </div>
+        <div>
+            <button type="submit">Sign In</button>
+        </div>
+    </form>
 </section>
 
 <section id="login" style="display: none;">
     <h1>Connexion</h1>
-    <p>WIP</p>
+    <form id="loginForm">
+        <div>
+            <label for="loginEmail">Email :</label>
+            <input type="email" id="loginEmail" name="loginEmail" required>
+        </div>
+        <div>
+            <label for="loginPassword">Mot de passe :</label>
+            <input type="password" id="loginPassword" name="loginPassword" required>
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+
 </section>
 
 <section id="profile" style="display: none;">
