@@ -1,4 +1,6 @@
 const sections = document.querySelectorAll('section'); // Sélectionne toutes les sections de la page
+const preGame = document.getElementById('pregame');
+const gaming = document.getElementById('gaming');
 const gameBoard = document.getElementById('game-board'); // Sélectionne le conteneur du plateau de jeu
 const movesDisplay = document.getElementById('moves'); // Sélectionne l'affichage du score
 const gameSettings = document.getElementById('game-settings'); // Sélectionne le conteneur des options de jeu
@@ -26,8 +28,8 @@ startButton.addEventListener('click', () => startGame());
 function startGame() {
     [rows, cols] = boardSizeSelect.value.split('x').map(Number); // Obtient les valeurs de lignes et de colonnes pour le plateau
     const cardType = cardTypeSelect.value; // Obtient le type de carte sélectionné
-    gameSettings.style.display = 'none'; // Cache les options de jeu
-    movesDisplay.style.visibility = 'visible'; // Rend visible l'affichage des mouvements
+    preGame.style.display = 'none'; // Cache les options de jeu
+    gaming.style.visibility = 'visible'; // Rend visible l'affichage du jeu
     gameBoard.innerHTML = ''; // Vide le plateau de jeu
     moves = 0; // Réinitialise le compteur de mouvements
     matchedPairs = 0; // Réinitialise le compteur de paires assorties
@@ -154,7 +156,7 @@ function checkForWin() {
 
 
 function resetGame() {
-    gameSettings.style.display = 'block';
-    movesDisplay.style.visibility = 'hidden';
+    preGame.style.display = 'block';
+    gaming.style.visibility = 'hidden';
     gameBoard.innerHTML = '';
 }

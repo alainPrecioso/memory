@@ -98,35 +98,39 @@
 
 <section id="game" style="display: none;">
     <h1>Jeu de Memory</h1>
-    <table id="best-scores">
-        <thead>
-        <tr>
-            <th>Tailles</th>
-            <th>Score</th>
-            <th>Utilisateur</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <div id="game-settings" class="box">
-        <label for="board-size">Choisissez une taille :</label>
-        <select id="board-size">
-            <option value="3x4">3x4</option>
-            <option value="4x4">4x4</option>
-            <option value="5x4">5x4</option>
-        </select>
-        <br>
-        <label for="card-type">Choisissez un jeu de cartes:</label>
-        <select id="card-type">
-            <option value="letters">Lettres</option>
-            <option value="animals">Animaux</option>
-        </select>
-        <br>
-        <button id="start-game">Jouer</button>
+    <div id="pregame">
+        <table id="best-scores">
+            <thead>
+            <tr>
+                <th>Tailles</th>
+                <th>Score</th>
+                <th>Utilisateur</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div id="game-settings" class="box">
+            <label for="board-size">Choisissez une taille :</label>
+            <select id="board-size">
+                <option value="3x4">3x4</option>
+                <option value="4x4">4x4</option>
+                <option value="5x4">5x4</option>
+            </select>
+            <br>
+            <label for="card-type">Choisissez un jeu de cartes:</label>
+            <select id="card-type">
+                <option value="letters">Lettres</option>
+                <option value="animals">Animaux</option>
+            </select>
+            <br>
+            <button id="start-game">Jouer</button>
+        </div>
     </div>
-    <div id="moves">Tours: 0</div>
-    <div id="game-board"></div>
+    <div id="gaming">
+        <div id="moves">Tours: 0</div>
+        <div id="game-board"></div>
+    </div>
 </section>
 </body>
 </html>
