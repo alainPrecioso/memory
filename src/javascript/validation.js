@@ -1,5 +1,4 @@
 // Get form elements
-const signInForm = document.getElementById('sign-in-form');
 const signInUsername = document.getElementById('sign-in-username');
 const signInEmail = document.getElementById('sign-in-email');
 const signInPassword = document.getElementById('sign-in-password');
@@ -99,7 +98,8 @@ const validateConfirmPassword = () => {
 const validateForm = () => {
     const isUsernameValid = signInUsername.value.length >= 3;
     const isEmailValid = signInEmail.checkValidity();
-    const isPasswordValid = signInPassword.value.length >= 6 && containsLowerCase(signInPassword.value) && containsDigit(signInPassword.value) && containsSpecialCharacter(signInPassword.value);
+    const isPasswordValid = signInPassword.value.length >= 6 && containsLowerCase(signInPassword.value) &&
+        containsDigit(signInPassword.value) && containsSpecialCharacter(signInPassword.value);
     const isConfirmPasswordValid = signInPassword.value === confirmPassword.value;
 
     submitButton.disabled = !(isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid);

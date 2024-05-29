@@ -1,6 +1,4 @@
-// Signin
-document.getElementById('sign-in-form').addEventListener('submit', handleSignIn);
-function handleSignIn(event) {
+const handleSignIn = (event) => {
     event.preventDefault();
     const email = document.getElementById('sign-in-email').value;
     const username = document.getElementById('sign-in-username').value;
@@ -28,36 +26,21 @@ function handleSignIn(event) {
     emptySignInFields();
     showSection('login');
     alert('Utilisateur enregistré.');
-}
+};
 
-function emptySignInFields() {
+const emptySignInFields = () => {
     document.getElementById('sign-in-username').value = '';
     document.getElementById('sign-in-email').value = '';
     document.getElementById('sign-in-password').value = '';
     document.getElementById('confirm-password').value = '';
-}
+};
 
-
-// Login
-document.getElementById('login-form').addEventListener('submit', handleLogin);
-document.getElementById('logoff').addEventListener('click', handleLogoff);
-
-document.getElementById('best-score-button').addEventListener('click', populateUserBestScores);
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (isLoggedIn()) {
-        populateUserBestScores();
-    }
-    navDisplay();
-    populateGlobalBestScores();
-});
-
-function emptyLoginFields() {
+const emptyLoginFields = () => {
     document.getElementById('login-email').value = '';
     document.getElementById('login-password').value = '';
-}
+};
 
-function navDisplay() {
+const navDisplay = () => {
     if (isLoggedIn()) {
         document.querySelectorAll('.not-logged').forEach(e => e.style.display = 'none');
         document.querySelectorAll('.logged').forEach(e => e.style.display = 'block');
@@ -65,10 +48,9 @@ function navDisplay() {
         document.querySelectorAll('.not-logged').forEach(e => e.style.display = 'block');
         document.querySelectorAll('.logged').forEach(e => e.style.display = 'none');
     }
-}
+};
 
-
-function handleLogin(event) {
+const handleLogin = (event) => {
     event.preventDefault();
 
     const email = document.getElementById('login-email').value;
@@ -86,25 +68,25 @@ function handleLogin(event) {
     emptyLoginFields();
     populateUserBestScores();
     showSection('profile');
-}
+};
 
-function handleLogoff(event) {
+const handleLogoff = (event) => {
     event.preventDefault();
     document.cookie = 'loggedInUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
     navDisplay();
     showSection('home');
     alert('Vous êtes maintenant déconnecté');
-}
+};
 
-function setLoggedIn(userEmail) {
+const setLoggedIn = (userEmail) => {
     document.cookie = `loggedInUser=${userEmail}`;
-}
+};
 
-function isLoggedIn() {
+const isLoggedIn = () => {
     return document.cookie.split(';').some(cookie => cookie.trim().startsWith('loggedInUser='));
-}
+};
 
-function getLoggedInUserEmail() {
+const getLoggedInUserEmail = () => {
     const name = 'loggedInUser=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookies = decodedCookie.split(';');
@@ -115,9 +97,9 @@ function getLoggedInUserEmail() {
         }
     }
     return null;
-}
+};
 
-function getLoggedInUserName() {
+const getLoggedInUserName = () => {
     const userEmail = getLoggedInUserEmail();
     if (!userEmail) {
         console.error("No logged-in user found.");
@@ -133,29 +115,28 @@ function getLoggedInUserName() {
     } else {
         return null;
     }
-}
-
+};
 
 // Game Scores
-function getUserBestScores(userEmail, gameSize) {
+const getUserBestScores= (userEmail, gameSize) => {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     const userIndex = users.findIndex(user => user.email === userEmail);
     if (userIndex !== -1 && users[userIndex].gridSize && users[userIndex].gridSize[gameSize]) {
         return users[userIndex].gridSize[gameSize].scores;
     }
     return [];
-}
+};
 
-function getGlobalBestScores() {
+const getGlobalBestScores = () => {
     return JSON.parse(localStorage.getItem('globalScores')) || {};
-}
+};
 
-function saveScore(score, gameSize) {
+const saveScore = (score, gameSize) => {
     if (isLoggedIn()) saveUserBestScore(score, gameSize);
     saveGlobalBestScore(score, gameSize);
-}
+};
 
-function saveUserBestScore(score, gameSize) {
+const saveUserBestScore = (score, gameSize) => {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     let email = getLoggedInUserEmail();
     const userIndex = users.findIndex(user => user.email === email);
@@ -180,9 +161,9 @@ function saveUserBestScore(score, gameSize) {
         localStorage.setItem('users', JSON.stringify(users));
         populateUserBestScores()
     }
-}
+};
 
-function saveGlobalBestScore(score, gameSize) {
+const saveGlobalBestScore = (score, gameSize) => {
     let globalScores = JSON.parse(localStorage.getItem('globalScores')) || {};
     const userName = getLoggedInUserName();
 
@@ -197,10 +178,10 @@ function saveGlobalBestScore(score, gameSize) {
 
     localStorage.setItem('globalScores', JSON.stringify(globalScores));
     populateGlobalBestScores()
-}
+};
 
 
-function populateUserBestScores() {
+const populateUserBestScores = () => {
     const userEmail = getLoggedInUserEmail();
 
     let users = JSON.parse(localStorage.getItem('users')) || [];
@@ -232,9 +213,9 @@ function populateUserBestScores() {
             isOdd = !isOdd;
         });
     }
-}
+};
 
-function populateGlobalBestScores() {
+const populateGlobalBestScores = () => {
     const tableBody = document.querySelector('#best-scores tbody');
     tableBody.innerHTML = '';
 
@@ -267,4 +248,16 @@ function populateGlobalBestScores() {
 
         isOdd = !isOdd;
     });
-}
+};
+
+document.getElementById('sign-in-form').addEventListener('submit', handleSignIn);
+document.getElementById('login-form').addEventListener('submit', handleLogin);
+document.getElementById('logoff').addEventListener('click', handleLogoff);
+document.getElementById('best-score-button').addEventListener('click', populateUserBestScores);
+document.addEventListener('DOMContentLoaded', () => {
+    if (isLoggedIn()) {
+        populateUserBestScores();
+    }
+    navDisplay();
+    populateGlobalBestScores();
+});
