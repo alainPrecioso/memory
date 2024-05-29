@@ -26,14 +26,15 @@ document.addEventListener('keydown', function(event) {
 startButton.addEventListener('click', () => startGame());
 
 function startGame() {
-    [rows, cols] = boardSizeSelect.value.split('x').map(Number); // Obtient les valeurs de lignes et de colonnes pour le plateau
+    [cols, rows] = boardSizeSelect.value.split('x').map(Number); // Obtient les valeurs de lignes et de colonnes pour le plateau
     const cardType = cardTypeSelect.value; // Obtient le type de carte sélectionné
     preGame.style.display = 'none'; // Cache les options de jeu
-    gaming.style.visibility = 'visible'; // Rend visible l'affichage du jeu
+    gaming.style.display = 'block'; // Rend visible l'affichage du jeu
     gameBoard.innerHTML = ''; // Vide le plateau de jeu
     moves = 0; // Réinitialise le compteur de mouvements
     matchedPairs = 0; // Réinitialise le compteur de paires assorties
     movesDisplay.innerText = `Tours : ${moves}`; // Affiche le nombre initial de mouvements
+    movesDisplay.style.visibility = 'visible'
     const cardsArray = generateCardsArray(rows * cols); // Génère un tableau de cartes
     createBoard(cardsArray, cardType); // Crée le plateau de jeu
 }
@@ -157,6 +158,6 @@ function checkForWin() {
 
 function resetGame() {
     preGame.style.display = 'block';
-    gaming.style.visibility = 'hidden';
+    gaming.style.display = 'none';
     gameBoard.innerHTML = '';
 }

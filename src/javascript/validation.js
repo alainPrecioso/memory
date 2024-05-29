@@ -19,6 +19,9 @@ const containsSpecialCharacter = str => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.te
 const validateUsername = () => {
     const usernameValid = signInUsername.value.length >= 3;
     usernameMessage.textContent = usernameValid ? '' : 'Le nom d\'utilisateur doit avoir au moins 3 caractères.';
+    signInUsername.parentElement.classList.remove('placeholder')
+    signInUsername.parentElement.classList.toggle('valid', usernameValid);
+    signInUsername.parentElement.classList.toggle('invalid', !usernameValid);
     validateForm();
 };
 
@@ -27,6 +30,9 @@ const validateEmail = () => {
     const email = signInEmail.value.trim();
     const emailValid = emailRegex.test(email);
     emailMessage.textContent = emailValid ? '' : 'Veuillez entrer une adresse email valide.';
+    signInEmail.parentElement.classList.remove('placeholder')
+    signInEmail.parentElement.classList.toggle('valid', emailValid);
+    signInEmail.parentElement.classList.toggle('invalid', !emailValid);
     validateForm();
 };
 
@@ -74,6 +80,9 @@ const validatePassword = () => {
             (hasLowerCase ? '' : 'Le mot de passe doit inclure au moins une lettre minuscule.<br>') +
             (hasDigit ? '' : 'Le mot de passe doit inclure au moins un chiffre.<br>') +
             (hasSpecialCharacter ? '' : 'Le mot de passe doit inclure au moins un caractère spécial.<br>'));
+    signInPassword.parentElement.classList.remove('placeholder')
+    signInPassword.parentElement.classList.toggle('valid', isPasswordValid);
+    signInPassword.parentElement.classList.toggle('invalid', !isPasswordValid);
     validateForm();
 };
 
@@ -81,6 +90,9 @@ const validatePassword = () => {
 const validateConfirmPassword = () => {
     const confirmPasswordValid = signInPassword.value === confirmPassword.value;
     confirmPasswordMessage.textContent = confirmPasswordValid ? '' : 'Les mots de passe ne correspondent pas.';
+    confirmPassword.parentElement.classList.remove('placeholder')
+    confirmPassword.parentElement.classList.toggle('valid', confirmPasswordValid);
+    confirmPassword.parentElement.classList.toggle('invalid', !confirmPasswordValid);
     validateForm();
 };
 
