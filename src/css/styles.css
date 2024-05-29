@@ -131,6 +131,29 @@ button:hover {
     grid-gap: 10px;
 }
 
+table {
+    margin: 20px;
+    padding: 10px;
+    border-collapse: collapse;
+    border: 5px solid lightpink;
+    border-radius: 5px;
+}
+
+th {
+    padding: 5px;
+}
+
+tr {
+
+}
+.game-size-odd {
+    background-color: lightpink;
+}
+
+.game-size-even {
+    background-color: lightblue;
+}
+
 .card {
     width: 100px;
     height: 100px;

@@ -64,7 +64,7 @@ function createBoard(cardsArray, type) {
         const cardFront = document.createElement('div');
         cardFront.classList.add('card-front');
 
-        // Si le joueur a choisi un set d'images, ajoute l'image correspondant à la lettre dans le set choisi, si non, ajoute la lettre en texte
+        // Si le joueur a choisi un set d'images, ajoute l'image correspondant à la lettre dans le set choisi, sinon, ajoute la lettre en texte
         if (type !== 'letters') {
             const cardImage = document.createElement('img');
             cardImage.src = `images/${type}/${card}.png`;
@@ -138,18 +138,20 @@ function resetPlay() {
 }
 
 function checkForWin() {
-    const totalPairs = (rows * cols) / 2;
+    const totalPairs = (cols * rows) / 2;
     if (matchedPairs === totalPairs) {
+        const size = cols + 'x' + rows;
         setTimeout(() => {
             alert(`Bravo! Votre score est de ${moves} tours !`);
             resetGame();
-            // TODO finish if needed
-            saveBestScore(getLoggedInUserEmail(), moves)
+            saveScore(moves, size)
 
 
         }, 500);
     }
 }
+
+
 
 function resetGame() {
     gameSettings.style.display = 'block';

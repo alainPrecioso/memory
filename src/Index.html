@@ -15,9 +15,9 @@
     <nav>
         <ul>
             <li><a href="#" data-section="home">Accueil</a></li>
-            <li><a href="#" data-section="signin">Inscription</a></li>
-            <li><a href="#" data-section="login">Connexion</a></li>
-            <li><a href="#" data-section="profile">Profile</a></li>
+            <li class="not-logged"><a href="#" data-section="signin">Inscription</a></li>
+            <li class="not-logged"><a href="#" data-section="login">Connexion</a></li>
+            <li class="logged"><a href="#" data-section="profile">Profile</a></li>
             <li><a href="#" data-section="game">Jeu</a></li>
         </ul>
     </nav>
@@ -82,13 +82,33 @@
 <section id="profile" style="display: none;">
     <h1>Profile</h1>
     <p>WIP</p>
-    <p id="bestScore">test</p>
+    <table id="user-best-scores">
+        <thead>
+        <tr>
+            <th>Tailles</th>
+            <th>Scores</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
     <button id="best-score-button">test</button>
     <button id="logoff">Déconnexion</button>
 </section>
 
 <section id="game" style="display: none;">
     <h1>Jeu de Memory</h1>
+    <table id="best-scores">
+        <thead>
+        <tr>
+            <th>Tailles</th>
+            <th>Score</th>
+            <th>Utilisateur</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
     <div id="game-settings" class="box">
         <label for="board-size">Choisissez une taille :</label>
         <select id="board-size">
