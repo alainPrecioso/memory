@@ -23,7 +23,9 @@ const validateUsername = () => {
 };
 
 const validateEmail = () => {
-    const emailValid = signInEmail.checkValidity();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const email = signInEmail.value.trim();
+    const emailValid = emailRegex.test(email);
     emailMessage.textContent = emailValid ? '' : 'Veuillez entrer une adresse email valide.';
     validateForm();
 };
