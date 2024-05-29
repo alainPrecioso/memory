@@ -140,8 +140,8 @@ function getLoggedInUserName() {
 function getUserBestScores(userEmail, gameSize) {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     const userIndex = users.findIndex(user => user.email === userEmail);
-    if (userIndex !== -1 && users[userIndex].size && users[userIndex].size[gameSize]) {
-        return users[userIndex].size[gameSize].scores;
+    if (userIndex !== -1 && users[userIndex].gridSize && users[userIndex].gridSize[gameSize]) {
+        return users[userIndex].gridSize[gameSize].scores;
     }
     return [];
 }
@@ -161,21 +161,21 @@ function saveUserBestScore(score, gameSize) {
     const userIndex = users.findIndex(user => user.email === email);
 
     if (userIndex !== -1) {
-        if (!users[userIndex].size) {
-            users[userIndex].size = {};
+        if (!users[userIndex].gridSize) {
+            users[userIndex].gridSize = {};
         }
 
-        if (!users[userIndex].size[gameSize]) {
-            users[userIndex].size[gameSize] = { scores: [] };
+        if (!users[userIndex].gridSize[gameSize]) {
+            users[userIndex].gridSize[gameSize] = { scores: [] };
         }
 
-        let userScores = users[userIndex].size[gameSize].scores;
+        let userScores = users[userIndex].gridSize[gameSize].scores;
         userScores.push(score);
         userScores.sort((a, b) => a - b);
         if (userScores.length > 5) {
             userScores = userScores.slice(0, 5);
         }
-        users[userIndex].size[gameSize].scores = userScores;
+        users[userIndex].gridSize[gameSize].scores = userScores;
 
         localStorage.setItem('users', JSON.stringify(users));
         populateUserBestScores()
@@ -205,13 +205,13 @@ function populateUserBestScores() {
 
     let users = JSON.parse(localStorage.getItem('users')) || [];
     const userIndex = users.findIndex(user => user.email === userEmail);
-    if (userIndex !== -1 && users[userIndex].size) {
+    if (userIndex !== -1 && users[userIndex].gridSize) {
         const tableBody = document.querySelector('#user-best-scores tbody');
         tableBody.innerHTML = '';
 
         let isOdd = true;
 
-        Object.keys(users[userIndex].size).forEach(gameSize => {
+        Object.keys(users[userIndex].gridSize).forEach(gameSize => {
             const bestScores = getUserBestScores(userEmail, gameSize);
             bestScores.forEach((score, index) => {
                 const row = document.createElement('tr');
@@ -245,7 +245,6 @@ function populateGlobalBestScores() {
         globalScores[gameSize].forEach((entry, index) => {
             const row = document.createElement('tr');
             row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
-
             if (index === 0) {
                 const cellSize = document.createElement('td');
                 cellSize.textContent = gameSize;
