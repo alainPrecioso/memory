@@ -66,7 +66,7 @@ const handleLogin = (event) => {
     }
     navDisplay();
     emptyLoginFields();
-    populateUserBestScores();
+    populateUserScores();
     showSection('profile');
 };
 
@@ -118,7 +118,7 @@ const getLoggedInUserName = () => {
 };
 
 const saveScore = (score, gameSize) => {
-    if (isLoggedIn()) saveUserBestScore(score, gameSize);
+    if (isLoggedIn()) saveUserScores(score, gameSize);
     saveGlobalBestScore(score, gameSize);
 };
 
@@ -132,6 +132,12 @@ const sortObjectKeys = (obj) => {
         result[key] = obj[key];
         return result;
     }, {});
+};
+
+const saveUserScores = (score, gameSize) => {
+    saveUserBestScore(score, gameSize);
+    saveUserLastScore(score, gameSize);
+    populateUserScores();
 };
 
 const saveUserBestScore = (score, gameSize) => {
@@ -148,13 +154,32 @@ const saveUserBestScore = (score, gameSize) => {
             users[userIndex].gridSize[gameSize] = [];
         }
 
-        users[userIndex].gridSize[gameSize].push({ email, score });
+        users[userIndex].gridSize[gameSize].push({ score, date: new Date().toISOString() });
+        users[userIndex].gridSize[gameSize].sort((a, b) => new Date(a.date) - new Date(b.date));
         users[userIndex].gridSize[gameSize] = sortAndTrimScores(users[userIndex].gridSize[gameSize]);
 
         users[userIndex].gridSize = sortObjectKeys(users[userIndex].gridSize);
 
         localStorage.setItem('users', JSON.stringify(users));
-        populateUserBestScores();
+    }
+};
+
+const saveUserLastScore = (score, gameSize) => {
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    let email = getLoggedInUserEmail();
+    const userIndex = users.findIndex(user => user.email === email);
+
+    if (userIndex !== -1) {
+        if (!users[userIndex].lastScores) {
+            users[userIndex].lastScores = [];
+        }
+
+        users[userIndex].lastScores.push({ score, date: new Date().toISOString(), gameSize });
+        if (users[userIndex].lastScores.length > 5) {
+            users[userIndex].lastScores = users[userIndex].lastScores.slice(-5);
+        }
+
+        localStorage.setItem('users', JSON.stringify(users));
     }
 };
 
@@ -166,7 +191,8 @@ const saveGlobalBestScore = (score, gameSize) => {
         globalScores[gameSize] = [];
     }
 
-    globalScores[gameSize].push({ user: userName, score });
+    globalScores[gameSize].push({ user: userName, score, date: new Date().toISOString() });
+    globalScores[gameSize].sort((a, b) => new Date(a.date) - new Date(b.date));
     globalScores[gameSize] = sortAndTrimScores(globalScores[gameSize]);
 
     globalScores = sortObjectKeys(globalScores);
@@ -175,34 +201,50 @@ const saveGlobalBestScore = (score, gameSize) => {
     populateGlobalBestScores();
 };
 
-const populateBestScores = (scoresData, targetElementId, getUserEmail = null) => {
+const populateScoreTable = (scoresData, targetElementId, isGlobal = null) => {
     const tableBody = document.querySelector(`#${targetElementId} tbody`);
     tableBody.innerHTML = '';
 
     let isOdd = true;
+    let prevGameSize = null;
 
     Object.keys(scoresData).forEach(gameSize => {
         scoresData[gameSize].forEach((entry, index) => {
             const row = document.createElement('tr');
-            row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
-            if (index === 0) {
+
+            if (gameSize !== prevGameSize) {
                 const cellSize = document.createElement('td');
                 cellSize.textContent = gameSize;
                 row.appendChild(cellSize);
+                prevGameSize = gameSize;
             } else {
-                const cellSize = document.createElement('td');
-                row.appendChild(cellSize);
+                const cellEmpty = document.createElement('td');
+                cellEmpty.textContent = '';
+                row.appendChild(cellEmpty);
             }
 
+            row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
+
             const cellScore = document.createElement('td');
-            cellScore.textContent = entry.score;
+            cellScore.textContent = entry.score === 0 ? "Parfait" : entry.score;
             row.appendChild(cellScore);
 
-            if (!getUserEmail) {
+            if (isGlobal) {
                 const cellUser = document.createElement('td');
                 cellUser.textContent = entry.user;
                 row.appendChild(cellUser);
             }
+
+            const cellDate = document.createElement('td');
+            const date = new Date(entry.date);
+            cellDate.textContent = date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            });
+            row.appendChild(cellDate);
 
             tableBody.appendChild(row);
         });
@@ -211,28 +253,80 @@ const populateBestScores = (scoresData, targetElementId, getUserEmail = null) =>
     });
 };
 
-const populateUserBestScores = () => {
-    let users = JSON.parse(localStorage.getItem('users')) || [];
+
+
+const populateUserScores = () => {
     const userEmail = getLoggedInUserEmail();
+    const users = JSON.parse(localStorage.getItem('users')) || [];
     const userIndex = users.findIndex(user => user.email === userEmail);
-    if (userIndex !== -1 && users[userIndex].gridSize) {
-        populateBestScores(users[userIndex].gridSize, 'user-best-scores', () => userEmail);
+
+    if (userIndex !== -1) {
+        const bestScoresData = users[userIndex].gridSize || {};
+        populateScoreTable(bestScoresData, 'user-best-scores');
     }
+    populateUserLastScores();
 };
+
 
 const populateGlobalBestScores = () => {
     const globalScores = JSON.parse(localStorage.getItem('globalScores')) || {};
-    populateBestScores(globalScores, 'best-scores');
+    populateScoreTable(globalScores, 'best-scores', true);
+};
+
+const populateUserLastScores = () => {
+    const userEmail = getLoggedInUserEmail();
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const userIndex = users.findIndex(user => user.email === userEmail);
+
+    if (userIndex !== -1) {
+        const lastScoresData = users[userIndex].lastScores || [];
+        const tableBody = document.querySelector('#user-last-scores tbody');
+        tableBody.innerHTML = '';
+
+        let isOdd = true;
+
+        lastScoresData.forEach(entry => {
+            const row = document.createElement('tr');
+            row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
+
+            const cellSize = document.createElement('td');
+            cellSize.textContent = entry.gameSize; // Display gameSize
+            row.appendChild(cellSize);
+
+            const cellScore = document.createElement('td');
+            cellScore.textContent = entry.score;
+            row.appendChild(cellScore);
+
+            const cellDate = document.createElement('td');
+            const date = new Date(entry.date);
+            cellDate.textContent = date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            });
+            row.appendChild(cellDate);
+
+            tableBody.appendChild(row);
+
+            isOdd = !isOdd;
+        });
+    }
+};
+
+
+const populateScores = () => {
+    if (isLoggedIn()) {
+        populateUserScores();
+    }
+    populateGlobalBestScores();
 };
 
 document.getElementById('sign-in-form').addEventListener('submit', handleSignIn);
 document.getElementById('login-form').addEventListener('submit', handleLogin);
 document.getElementById('logoff').addEventListener('click', handleLogoff);
-document.getElementById('best-score-button').addEventListener('click', populateUserBestScores);
 document.addEventListener('DOMContentLoaded', () => {
-    if (isLoggedIn()) {
-        populateUserBestScores();
-    }
     navDisplay();
-    populateGlobalBestScores();
+    populateScores();
 });
