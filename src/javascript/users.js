@@ -29,10 +29,28 @@ const handleSignIn = (event) => {
 };
 
 const emptySignInFields = () => {
-    document.getElementById('sign-in-username').value = '';
-    document.getElementById('sign-in-email').value = '';
-    document.getElementById('sign-in-password').value = '';
-    document.getElementById('confirm-password').value = '';
+    const username = document.getElementById('sign-in-username');
+    username.value = '';
+    username.parentElement.classList.remove('valid');
+    username.parentElement.classList.add('placeholder');
+
+    const email = document.getElementById('sign-in-email');
+    email.value = '';
+    email.parentElement.classList.remove('valid');
+    email.parentElement.classList.add('placeholder');
+
+    const password = document.getElementById('sign-in-password');
+    password.value = '';
+    password.parentElement.classList.remove('valid');
+    password.parentElement.classList.add('placeholder');
+
+    const confirmPassword = document.getElementById('confirm-password');
+    confirmPassword.value = '';
+    confirmPassword.parentElement.classList.remove('valid');
+    confirmPassword.parentElement.classList.add('placeholder');
+
+    document.getElementById('password-strength-bar').style.width = '0';
+    document.getElementById('sign-in-submit').disabled = true;
 };
 
 const emptyLoginFields = () => {
