@@ -10,7 +10,7 @@ let rows, cols;
 let firstCard = null; // Carte cliquée en premier
 let secondCard = null; // Carte cliquée en second
 let lockBoard = false; // Empêche les cartes d'être retournées pendant la vérification de correspondance
-let moves = 0; // Nombre de mouvements effectués ou score
+let errors = 0; // Nombre de mouvements effectués ou score
 let matchedPairs = 0; // Nombre de paires de cartes trouvées
 
 
@@ -20,9 +20,9 @@ const startGame = () => {
     preGame.style.display = 'none'; // Cache les options de jeu
     gaming.style.display = 'block'; // Rend visible l'affichage du jeu
     gameBoard.innerHTML = ''; // Vide le plateau de jeu
-    moves = 0; // Réinitialise le compteur de mouvements
+    errors = 0; // Réinitialise le compteur de mouvements
     matchedPairs = 0; // Réinitialise le compteur de paires assorties
-    movesDisplay.innerText = `Tours : ${moves}`; // Affiche le nombre initial de mouvements
+    movesDisplay.innerText = `Erreurs : ${errors}`; // Affiche le nombre initial de mouvements
     movesDisplay.style.visibility = 'visible'
     const cardsArray = generateCardsArray(rows * cols); // Génère un tableau de cartes
     createBoard(cardsArray, cardType); // Crée le plateau de jeu
@@ -92,8 +92,7 @@ function flipCard() {
 
     secondCard = this; // Enregistre la deuxième carte
     lockBoard = true; // Verrouille le plateau pour empêcher d'autres clics
-    moves++; // Incrémente le nombre de mouvements
-    movesDisplay.innerText = `Tours : ${moves}`; // Met à jour l'affichage des mouvements
+
 
     checkForMatch(); // Vérifie si les cartes correspondent
 }
@@ -105,6 +104,8 @@ const checkForMatch = () => {
         matchedPairs++; // Incrémente le nombre de paires assorties
         checkForWin(); // Vérifie s'il y a une victoire
     } else {
+        errors++; // Incrémente le nombre de mouvements
+        movesDisplay.innerText = `Erreurs : ${errors}`; // Met à jour l'affichage des mouvements
         unflipCards(); // Retourne les cartes
     }
 };
@@ -134,9 +135,9 @@ const checkForWin = () => {
     if (matchedPairs === totalPairs) {
         const size = cols + 'x' + rows;
         setTimeout(() => {
-            alert(`Bravo! Votre score est de ${moves} tours !`);
+            alert(`Bravo! Votre score est de ${errors} erreurs !`);
             resetGame();
-            saveScore(moves, size)
+            saveScore(errors, size)
 
 
         }, 500);
