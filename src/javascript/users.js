@@ -117,23 +117,21 @@ const getLoggedInUserName = () => {
     }
 };
 
-// Game Scores
-const getUserBestScores= (userEmail, gameSize) => {
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(user => user.email === userEmail);
-    if (userIndex !== -1 && users[userIndex].gridSize && users[userIndex].gridSize[gameSize]) {
-        return users[userIndex].gridSize[gameSize].scores;
-    }
-    return [];
-};
-
-const getGlobalBestScores = () => {
-    return JSON.parse(localStorage.getItem('globalScores')) || {};
-};
-
 const saveScore = (score, gameSize) => {
     if (isLoggedIn()) saveUserBestScore(score, gameSize);
     saveGlobalBestScore(score, gameSize);
+};
+
+const sortAndTrimScores = (scores, limit = 5) => {
+    scores.sort((a, b) => a.score - b.score);
+    return scores.slice(0, limit);
+};
+
+const sortObjectKeys = (obj) => {
+    return Object.keys(obj).sort().reduce((result, key) => {
+        result[key] = obj[key];
+        return result;
+    }, {});
 };
 
 const saveUserBestScore = (score, gameSize) => {
@@ -147,26 +145,16 @@ const saveUserBestScore = (score, gameSize) => {
         }
 
         if (!users[userIndex].gridSize[gameSize]) {
-            users[userIndex].gridSize[gameSize] = { scores: [] };
+            users[userIndex].gridSize[gameSize] = [];
         }
 
-        let userScores = users[userIndex].gridSize[gameSize].scores;
-        userScores.push(score);
-        userScores.sort((a, b) => a - b);
-        if (userScores.length > 5) {
-            userScores = userScores.slice(0, 5);
-        }
-        users[userIndex].gridSize[gameSize].scores = userScores;
+        users[userIndex].gridSize[gameSize].push({ email, score });
+        users[userIndex].gridSize[gameSize] = sortAndTrimScores(users[userIndex].gridSize[gameSize]);
 
-        const sortedGameSizes = Object.keys(users[userIndex].gridSize).sort();
-        const sortedGridSize = {};
-        sortedGameSizes.forEach(size => {
-            sortedGridSize[size] = users[userIndex].gridSize[size];
-        });
-        users[userIndex].gridSize = sortedGridSize;
+        users[userIndex].gridSize = sortObjectKeys(users[userIndex].gridSize);
 
         localStorage.setItem('users', JSON.stringify(users));
-        populateUserBestScores()
+        populateUserBestScores();
     }
 };
 
@@ -177,65 +165,24 @@ const saveGlobalBestScore = (score, gameSize) => {
     if (!globalScores[gameSize]) {
         globalScores[gameSize] = [];
     }
-    globalScores[gameSize].push({ user: userName, score: score });
-    globalScores[gameSize].sort((a, b) => a.score - b.score);
-    if (globalScores[gameSize].length > 5) {
-        globalScores[gameSize] = globalScores[gameSize].slice(0, 5);
-    }
 
-    const sortedGameSizes = Object.keys(globalScores).sort();
-    const sortedGlobalScores = {};
-    sortedGameSizes.forEach(size => {
-        sortedGlobalScores[size] = globalScores[size];
-    });
+    globalScores[gameSize].push({ user: userName, score });
+    globalScores[gameSize] = sortAndTrimScores(globalScores[gameSize]);
 
-    localStorage.setItem('globalScores', JSON.stringify(sortedGlobalScores));
-    populateGlobalBestScores()
+    globalScores = sortObjectKeys(globalScores);
+
+    localStorage.setItem('globalScores', JSON.stringify(globalScores));
+    populateGlobalBestScores();
 };
 
-const populateUserBestScores = () => {
-    const userEmail = getLoggedInUserEmail();
-
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(user => user.email === userEmail);
-    if (userIndex !== -1 && users[userIndex].gridSize) {
-        const tableBody = document.querySelector('#user-best-scores tbody');
-        tableBody.innerHTML = '';
-
-        let isOdd = true;
-
-        Object.keys(users[userIndex].gridSize).forEach(gameSize => {
-            const bestScores = getUserBestScores(userEmail, gameSize);
-            bestScores.forEach((score, index) => {
-                const row = document.createElement('tr');
-                row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
-                if (index === 0) {
-                    const cellSize = document.createElement('td');
-                    cellSize.textContent = gameSize;
-                    row.appendChild(cellSize);
-                } else {
-                    const cellSize = document.createElement('td');
-                    row.appendChild(cellSize);
-                }
-                const cellScore = document.createElement('td');
-                cellScore.textContent = score;
-                row.appendChild(cellScore);
-                tableBody.appendChild(row);
-            });
-            isOdd = !isOdd;
-        });
-    }
-};
-
-const populateGlobalBestScores = () => {
-    const tableBody = document.querySelector('#best-scores tbody');
+const populateBestScores = (scoresData, targetElementId, getUserEmail = null) => {
+    const tableBody = document.querySelector(`#${targetElementId} tbody`);
     tableBody.innerHTML = '';
 
-    const globalScores = getGlobalBestScores();
     let isOdd = true;
 
-    Object.keys(globalScores).forEach(gameSize => {
-        globalScores[gameSize].forEach((entry, index) => {
+    Object.keys(scoresData).forEach(gameSize => {
+        scoresData[gameSize].forEach((entry, index) => {
             const row = document.createElement('tr');
             row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
             if (index === 0) {
@@ -248,18 +195,34 @@ const populateGlobalBestScores = () => {
             }
 
             const cellScore = document.createElement('td');
-            cellScore.textContent = String(entry.score);
+            cellScore.textContent = entry.score;
             row.appendChild(cellScore);
 
-            const cellUser = document.createElement('td');
-            cellUser.textContent = entry.user;
-            row.appendChild(cellUser);
+            if (!getUserEmail) {
+                const cellUser = document.createElement('td');
+                cellUser.textContent = entry.user;
+                row.appendChild(cellUser);
+            }
 
             tableBody.appendChild(row);
         });
 
         isOdd = !isOdd;
     });
+};
+
+const populateUserBestScores = () => {
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const userEmail = getLoggedInUserEmail();
+    const userIndex = users.findIndex(user => user.email === userEmail);
+    if (userIndex !== -1 && users[userIndex].gridSize) {
+        populateBestScores(users[userIndex].gridSize, 'user-best-scores', () => userEmail);
+    }
+};
+
+const populateGlobalBestScores = () => {
+    const globalScores = JSON.parse(localStorage.getItem('globalScores')) || {};
+    populateBestScores(globalScores, 'best-scores');
 };
 
 document.getElementById('sign-in-form').addEventListener('submit', handleSignIn);
