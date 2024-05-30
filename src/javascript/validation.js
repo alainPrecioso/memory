@@ -15,23 +15,24 @@ const containsDigit = str => /\d/.test(str);
 
 const containsSpecialCharacter = str => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(str);
 
+const toggleCheckmark = (element, condition) => {
+    element.parentElement.classList.remove('placeholder')
+    element.parentElement.classList.toggle('valid', condition);
+    element.parentElement.classList.toggle('invalid', !condition);
+}
 const validateUsername = () => {
-    const usernameValid = signInUsername.value.length >= 3;
-    usernameMessage.textContent = usernameValid ? '' : 'Le nom d\'utilisateur doit avoir au moins 3 caractères.';
-    signInUsername.parentElement.classList.remove('placeholder')
-    signInUsername.parentElement.classList.toggle('valid', usernameValid);
-    signInUsername.parentElement.classList.toggle('invalid', !usernameValid);
+    const isUsernameValid = signInUsername.value.length >= 3;
+    usernameMessage.textContent = isUsernameValid ? '' : 'Le nom d\'utilisateur doit avoir au moins 3 caractères.';
+    toggleCheckmark(signInUsername, isUsernameValid);
     validateForm();
 };
 
 const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const email = signInEmail.value.trim();
-    const emailValid = emailRegex.test(email);
-    emailMessage.textContent = emailValid ? '' : 'Veuillez entrer une adresse email valide.';
-    signInEmail.parentElement.classList.remove('placeholder')
-    signInEmail.parentElement.classList.toggle('valid', emailValid);
-    signInEmail.parentElement.classList.toggle('invalid', !emailValid);
+    const email = signInEmail.value;
+    const isEmailValid = emailRegex.test(email);
+    emailMessage.textContent = isEmailValid ? '' : 'Veuillez entrer une adresse email valide.';
+    toggleCheckmark(signInEmail, isEmailValid);
     validateForm();
 };
 
@@ -53,7 +54,7 @@ const validatePassword = () => {
 
     passwordStrengthBar.style.width = (strength * 25) + '%'; // chaque condition augmente la taille de la barre de 25
     switch (strength) {
-        case 0:
+        case 0: //fallthrough
         case 1:
             passwordStrengthBar.style.backgroundColor = 'red';
             passwordStrengthText.textContent = 'Faible';
@@ -79,9 +80,7 @@ const validatePassword = () => {
             (hasLowerCase ? '' : 'Le mot de passe doit inclure au moins une lettre minuscule.<br>') +
             (hasDigit ? '' : 'Le mot de passe doit inclure au moins un chiffre.<br>') +
             (hasSpecialCharacter ? '' : 'Le mot de passe doit inclure au moins un caractère spécial.<br>'));
-    signInPassword.parentElement.classList.remove('placeholder')
-    signInPassword.parentElement.classList.toggle('valid', isPasswordValid);
-    signInPassword.parentElement.classList.toggle('invalid', !isPasswordValid);
+    toggleCheckmark(signInPassword, isPasswordValid);
     validateForm();
 };
 
@@ -89,9 +88,7 @@ const validatePassword = () => {
 const validateConfirmPassword = () => {
     const confirmPasswordValid = signInPassword.value === confirmPassword.value;
     confirmPasswordMessage.textContent = confirmPasswordValid ? '' : 'Les mots de passe ne correspondent pas.';
-    confirmPassword.parentElement.classList.remove('placeholder')
-    confirmPassword.parentElement.classList.toggle('valid', confirmPasswordValid);
-    confirmPassword.parentElement.classList.toggle('invalid', !confirmPasswordValid);
+    toggleCheckmark(confirmPassword, confirmPasswordValid);
     validateForm();
 };
 
