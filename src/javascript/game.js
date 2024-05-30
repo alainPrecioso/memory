@@ -43,7 +43,7 @@ const generateCardsArray = (numberOfCards) => {
 };
 
 const createBoard = (cardsArray, type) => {
-    gameBoard.style.gridTemplateColumns = `repeat(${cols}, 100px)`; // Définit le nombre de colonnes en fonction de la taille du plateau
+    gameBoard.style.gridTemplateColumns = `repeat(${cols}, auto)`; // Définit le nombre de colonnes en fonction de la taille du plateau
 
     // Crée chaque carte sur le plateau de jeu
     cardsArray.forEach(card => { // Pour chaque carte (ou lettre) dans l'array :
