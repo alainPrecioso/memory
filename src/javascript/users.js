@@ -158,6 +158,13 @@ const saveUserBestScore = (score, gameSize) => {
         }
         users[userIndex].gridSize[gameSize].scores = userScores;
 
+        const sortedGameSizes = Object.keys(users[userIndex].gridSize).sort();
+        const sortedGridSize = {};
+        sortedGameSizes.forEach(size => {
+            sortedGridSize[size] = users[userIndex].gridSize[size];
+        });
+        users[userIndex].gridSize = sortedGridSize;
+
         localStorage.setItem('users', JSON.stringify(users));
         populateUserBestScores()
     }
@@ -176,10 +183,15 @@ const saveGlobalBestScore = (score, gameSize) => {
         globalScores[gameSize] = globalScores[gameSize].slice(0, 5);
     }
 
-    localStorage.setItem('globalScores', JSON.stringify(globalScores));
+    const sortedGameSizes = Object.keys(globalScores).sort();
+    const sortedGlobalScores = {};
+    sortedGameSizes.forEach(size => {
+        sortedGlobalScores[size] = globalScores[size];
+    });
+
+    localStorage.setItem('globalScores', JSON.stringify(sortedGlobalScores));
     populateGlobalBestScores()
 };
-
 
 const populateUserBestScores = () => {
     const userEmail = getLoggedInUserEmail();
