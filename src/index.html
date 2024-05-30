@@ -94,14 +94,26 @@
         <caption>Vos Meilleurs Scores :</caption>
         <thead>
         <tr>
-            <th>Tailles</th>
-            <th>Scores</th>
+            <th>Taille</th>
+            <th>Score</th>
+            <th>Date</th>
         </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
-    <button id="best-score-button">test</button>
+    <table id="user-last-scores">
+        <caption>Vos Derniers Scores :</caption>
+        <thead>
+        <tr>
+            <th>Taille</th>
+            <th>Score</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
     <button id="logoff">Déconnexion</button>
 </section>
 
@@ -112,9 +124,10 @@
             <caption>Meilleurs Scores :</caption>
             <thead>
             <tr>
-                <th>Tailles</th>
+                <th>Taille</th>
                 <th>Score</th>
                 <th>Utilisateur</th>
+                <th>Date</th>
             </tr>
             </thead>
             <tbody>
@@ -124,9 +137,10 @@
             <label for="board-size">Choisissez une taille :</label>
             <select id="board-size">
                 <option value="2x2">2x2</option>
+                <option value="2x3">2x3</option>
                 <option value="3x4">3x4</option>
                 <option value="4x4">4x4</option>
-                <option value="5x4">5x4</option>
+                <option value="4x5">4x5</option>
             </select>
             <br>
             <label for="card-type">Choisissez un jeu de cartes:</label>
@@ -139,7 +153,7 @@
         </div>
     </div>
     <div id="gaming">
-        <div id="moves">Tours: 0</div>
+        <div id="moves">Erreurs: 0</div>
         <div id="game-board"></div>
     </div>
 </section>
