@@ -216,6 +216,7 @@ td {
     position: relative;
     perspective: 1000px;
     cursor: pointer;
+    user-select: none;
 }
 
 .card-inner {

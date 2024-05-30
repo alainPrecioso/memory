@@ -308,7 +308,7 @@ const populateUserLastScores = () => {
             row.classList.add(isOdd ? 'game-size-odd' : 'game-size-even');
 
             const cellSize = document.createElement('td');
-            cellSize.textContent = entry.gameSize; // Display gameSize
+            cellSize.textContent = entry.gameSize;
             row.appendChild(cellSize);
 
             const cellScore = document.createElement('td');
