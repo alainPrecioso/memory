@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Slab:400,700&display=swap');
+
 article h4 {
     margin-bottom: 0.1em;
 }
@@ -8,13 +10,13 @@ article p {
 }
 
 .resume ul {
-    padding: 15%;
-}
+    padding: 7%;
+    overflow: hidden;
 
+}
 .resume li {
     list-style-type: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .resume li i:before {
     margin-right: 5px;
@@ -24,11 +26,15 @@ article {
 }
 p {
     min-height: 1.5em;
+}
 
+.background {
+    background-color: rgba(173, 216, 230, 0.3);
+    background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, rgba(173, 216, 230, 0.1) 100px ), repeating-linear-gradient( lightblue, lightpink );
 }
 
 .resume {
-    background: white;
+    font-family: Roboto, sans-serif;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -38,6 +44,15 @@ p {
     align-items: stretch;
 }
 
+.resume h1,
+.resume h2,
+.resume h3,
+.resume h4,
+.resume h5,
+.resume h6 {
+    font-family: Roboto Slab, sans-serif;
+}
+
 .title-section, main {
     padding: 1%;
     width: 65%;
@@ -45,16 +60,25 @@ p {
 }
 
 .personal-informations {
+
     display: flex;
-    align-items : flex-end;
+    align-items : center;
     width: 35%;
 }
 
 .misc {
-    background: white;
     padding: 1%;
     width: 35%;
     box-sizing: border-box;
+}
+
+.location {
+    font-style: normal;
+    color: red;
+}
+
+.print-only {
+    display: none;
 }
 
 
@@ -72,19 +96,16 @@ p {
 
         main {
             width: auto;
-            background: white;
             order: 3;
         }
 
         .personal-informations {
             width: auto;
-            background: white;
             order: 2;
         }
 
         .misc {
             width: auto;
-            background: white;
             order: 4;
         }
     }
@@ -105,11 +126,18 @@ p {
         display: none;
     }
 
+    .location {
+        color: black;
+    }
+
     .personal-informations, .misc {
         padding: 0;
     }
 
     .link {
         display: none;
+    }
+    .print-only {
+        display: block;
     }
 }
