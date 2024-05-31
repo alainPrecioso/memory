@@ -14,5 +14,7 @@ function showSection(sectionId) {
     sections.forEach(section => {
         section.style.display = 'none';
     });
-    document.getElementById(sectionId).style.display = 'block';
+    const body = document.body;
+    sectionId === 'home' ? body.style.height = '115vh' : body.style.height = '100%';
+    document.getElementById(sectionId).style.display = 'flex';
 }
