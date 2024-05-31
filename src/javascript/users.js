@@ -6,58 +6,47 @@ const handleSignIn = (event) => {
 
     let users = JSON.parse(localStorage.getItem('users')) || [];
 
-    const userExistsByEmail = users.some(user => user.email === email);
-    const userExistsByUsername = users.some(user => user.username === username);
-
-    if (userExistsByEmail && userExistsByUsername) {
-        alert('Un utilisateur avec ce nom et cette adresse existe déjà.');
-        return;
-    } else if (userExistsByEmail) {
+    if (users.some(user => user.email === email)) {
         alert('Un utilisateur avec cette adresse existe déjà.');
         return;
-    } else  if (userExistsByUsername) {
+    }
+    if (users.some(user => user.username === username)) {
         alert('Un utilisateur avec ce nom existe déjà.');
         return;
     }
 
-    users.push({ email, username, password });
+    users.push({ email, username, password }); // équivalent à push({ email: email, username: username, password: password })
 
     localStorage.setItem('users', JSON.stringify(users));
-    emptySignInFields();
+    resetSignInForm();
     showSection('login');
     alert('Utilisateur enregistré.');
 };
 
-const emptySignInFields = () => {
-    const username = document.getElementById('sign-in-username');
-    username.value = '';
-    username.parentElement.classList.remove('valid');
-    username.parentElement.classList.add('placeholder');
 
-    const email = document.getElementById('sign-in-email');
-    email.value = '';
-    email.parentElement.classList.remove('valid');
-    email.parentElement.classList.add('placeholder');
-
-    const password = document.getElementById('sign-in-password');
-    password.value = '';
-    password.parentElement.classList.remove('valid');
-    password.parentElement.classList.add('placeholder');
-
-    const confirmPassword = document.getElementById('confirm-password');
-    confirmPassword.value = '';
-    confirmPassword.parentElement.classList.remove('valid');
-    confirmPassword.parentElement.classList.add('placeholder');
+const resetSignInForm = () => {
+    resetSignInInputField('sign-in-username');
+    resetSignInInputField('sign-in-email');
+    resetSignInInputField('sign-in-password');
+    resetSignInInputField('confirm-password');
 
     document.getElementById('password-strength-bar').style.width = '0';
     document.getElementById('sign-in-submit').disabled = true;
 };
+
+const resetSignInInputField = (inputElementId) => {
+    const input = document.getElementById(inputElementId);
+    input.value = '';
+    input.parentElement.classList.remove('valid');
+    input.parentElement.classList.add('placeholder');
+}
 
 const emptyLoginFields = () => {
     document.getElementById('login-email').value = '';
     document.getElementById('login-password').value = '';
 };
 
+// Affiche ou cache les liens d'inscription de connexion et de profil dans la navbar
 const navDisplay = () => {
     if (isLoggedIn()) {
         document.querySelectorAll('.not-logged').forEach(e => e.style.display = 'none');
@@ -81,6 +70,7 @@ const handleLogin = (event) => {
         alert('Vous êtes connecté');
     } else {
         alert('Utilisateur non trouvé, vérifiez votre adresse et votre mot de passe et essayez encore');
+        return;
     }
     navDisplay();
     emptyLoginFields();
@@ -106,12 +96,11 @@ const isLoggedIn = () => {
 
 const getLoggedInUserEmail = () => {
     const name = 'loggedInUser=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookies = decodedCookie.split(';');
+    const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
         let cookie = cookies[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
+        if (cookie.startsWith(name)) {
+            return cookie.substring(name.length);
         }
     }
     return null;
@@ -227,7 +216,7 @@ const populateScoreTable = (scoresData, targetElementId, isGlobal = null) => {
     let prevGameSize = null;
 
     Object.keys(scoresData).forEach(gameSize => {
-        scoresData[gameSize].forEach((entry, index) => {
+        scoresData[gameSize].forEach((entry) => {
             const row = document.createElement('tr');
 
             if (gameSize !== prevGameSize) {
@@ -313,6 +302,7 @@ const populateUserLastScores = () => {
 
             const cellScore = document.createElement('td');
             cellScore.textContent = entry.score;
+            cellScore.textContent = entry.score === 0 ? "Parfait" : entry.score;
             row.appendChild(cellScore);
 
             const cellDate = document.createElement('td');
